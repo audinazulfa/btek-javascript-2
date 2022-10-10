@@ -4,9 +4,12 @@ const rline = readline.createInterface({
   output: process.stdout
 })
 
-rline.question('Berapa Jarak Tempuh? : ', function(jarak) {
+var recursiveAsyncReadLine = function () {
+  rline.question('Berapa Jarak Tempuh? : ', function(jarak) {
     console.log(`${jarak}`);
-
+    
+    rline.question('Apakah ingin diulang? ', function(recursiveAsyncReadLine) {
+      console.log(`${recursiveAsyncReadLine}`);
     if(jarak <= 2) {
       const harga = 8000;
       console.log("Total Ongkos Kirim : " + new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(harga))
@@ -20,16 +23,25 @@ rline.question('Berapa Jarak Tempuh? : ', function(jarak) {
         const harga = 8000
 
         const harga2 = harga + (tarif*(jarak-2))
-        console.log("Total Ongkos Kirim : " + new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(harga2))
-
+    
         const layanan = 0.045 * harga2
-        console.log("Biaya Layanan : " + new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(layanan))
+        
         jarak++;
-        break;
       }
+      console.log("Total Ongkos Kirim : " + new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(harga2))
+      console.log("Biaya Layanan : " + new Intl.NumberFormat("id-ID", { style: "currency", currency: "IDR"}).format(layanan))
     }
-    rline.close();
+    recursiveAsyncReadLine();
+    rline.question('Apakah ingin diulang? ', function(recursiveAsyncReadLine) {
+      if (answer.toLowerCase() == 'n') {
+        rline.close()
+      } else {
+        question()
+      }
   });
+    });
+  });
+};
 
 rline.on('close', function() {
   console.log('\nBye!');
